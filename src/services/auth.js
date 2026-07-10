@@ -16,7 +16,7 @@ export const signUpUser = async ({ email, password, fullName, phone, flatNumber,
         phone,
         flat_number: flatNumber,
         building,
-        role: 'ADMIN', // Automatically default to resident on signup
+        role: 'RESIDENT', // Automatically default to resident on signup
       },
     },
   });
