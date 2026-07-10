@@ -30,9 +30,9 @@ export const Navbar = ({ onMenuClick }) => {
       </div>
 
       {/* Right side: Notifications & User Profile */}
-      <div className="flex items-center gap-4">
-        {/* Role tag */}
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
+      <div className="flex items-center gap-2 sm:gap-4">
+        {/* Role tag - Hidden on mobile, shown on tablet & desktop */}
+        <span className={`hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
           user?.role === 'ADMIN'
             ? 'bg-red-50 text-red-700 border-red-200'
             : 'bg-primary-50 text-primary-700 border-primary-200'
