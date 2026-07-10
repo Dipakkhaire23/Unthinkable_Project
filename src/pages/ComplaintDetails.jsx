@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getComplaintById, updateComplaintAdmin, updateComplaintResident, deleteComplaint } from '../services/complaints';
 import { notifyComplaintStatusChange } from '../services/email';
@@ -12,6 +12,7 @@ import { ArrowLeft, User, Phone, Mail, Home, Building2, Calendar, Clipboard, Ale
 export const ComplaintDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user: currentUser } = useAuth();
   const isAdmin = currentUser?.role === 'ADMIN';
 
@@ -117,6 +118,15 @@ export const ComplaintDetails = () => {
       fetchComplaintDetails();
     }
   }, [id, currentUser]);
+
+  useEffect(() => {
+    if (searchParams.get('edit') === 'true' && complaint && !isAdmin && complaint.status === 'Open') {
+      setIsEditing(true);
+      setEditCategory(complaint.category);
+      setEditDescription(complaint.description);
+      setEditPhotoPreview(complaint.photo_url || '');
+    }
+  }, [searchParams, complaint, isAdmin]);
 
   const handleAdminUpdate = async (e) => {
     e.preventDefault();

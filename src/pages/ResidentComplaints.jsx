@@ -20,21 +20,21 @@ export const ResidentComplaints = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
 
-  useEffect(() => {
-    const fetchComplaints = async () => {
-      try {
-        if (!user) return;
-        const data = await getComplaintsForResident(user.id);
-        setComplaints(data);
-        setFilteredComplaints(data);
-      } catch (err) {
-        console.error('Error fetching complaints:', err);
-        setError('Failed to load your complaints list.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchComplaints = async () => {
+    try {
+      if (!user) return;
+      const data = await getComplaintsForResident(user.id);
+      setComplaints(data);
+      setFilteredComplaints(data);
+    } catch (err) {
+      console.error('Error fetching complaints:', err);
+      setError('Failed to load your complaints list.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchComplaints();
   }, [user]);
 
@@ -154,7 +154,7 @@ export const ResidentComplaints = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredComplaints.map((complaint) => (
-            <ComplaintCard key={complaint.id} complaint={complaint} isAdmin={false} />
+            <ComplaintCard key={complaint.id} complaint={complaint} isAdmin={false} onDeleteSuccess={fetchComplaints} />
           ))}
         </div>
       )}
