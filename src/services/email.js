@@ -34,12 +34,6 @@ export const sendEmail = async ({ recipient, subject, bodyHtml }) => {
  * Notify resident when a complaint status changes.
  */
 export const notifyComplaintStatusChange = async ({ complaintId, newStatus, adminNote, residentId, category, description }) => {
-  // Only notify when status is 'Resolved' (as requested)
-  if (newStatus !== 'Resolved') {
-    console.log(`[EMAIL SKIPPED] Status is ${newStatus}, not Resolved.`);
-    return true;
-  }
-
   try {
     console.log(
       `%c[EMAIL DISPATCHING] Status change for complaint #${complaintId.substring(0, 8)}`,
@@ -48,7 +42,8 @@ export const notifyComplaintStatusChange = async ({ complaintId, newStatus, admi
 
     const { data, error } = await supabase.functions.invoke('send-email', {
       body: {
-        status: 'complaint_resolved',
+        status: 'complaint_status_change',
+        newStatus,
         complaintId,
         residentId,
         category,
@@ -60,7 +55,7 @@ export const notifyComplaintStatusChange = async ({ complaintId, newStatus, admi
     if (error) throw error;
     return true;
   } catch (error) {
-    console.error('Failed to dispatch complaint resolution email:', error);
+    console.error('Failed to dispatch complaint status email:', error);
     return false;
   }
 };

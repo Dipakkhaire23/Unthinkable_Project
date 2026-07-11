@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { status, title, description, complaintId, category, residentId, adminNote } = await req.json();
+    const { status, newStatus, title, description, complaintId, category, residentId, adminNote } = await req.json();
 
     if (!GMAIL_USER || !GMAIL_PASS) {
       throw new Error("Gmail credentials (GMAIL_USER, GMAIL_PASS) are not configured in edge function environment variables");
@@ -150,10 +150,9 @@ Deno.serve(async (req) => {
           await logEmail(resident.email, subject, html, "Failed");
         }
       }
-
-    } else if (status === "complaint_resolved") {
-      if (!complaintId || !residentId || !category || !description) {
-        throw new Error("Missing parameters for complaint_resolved notification. Required: 'complaintId', 'residentId', 'category', 'description'");
+    } else if (status === "complaint_status_change") {
+      if (!complaintId || !residentId || !category || !description || !newStatus) {
+        throw new Error("Missing parameters for complaint_status_change notification. Required: 'complaintId', 'residentId', 'category', 'description', 'newStatus'");
       }
 
       // Fetch the specific resident's email and full_name
@@ -167,7 +166,13 @@ Deno.serve(async (req) => {
         throw new Error(`Resident details not found in database: ${fetchError?.message || 'No record'}`);
       }
 
-      const subject = `✅ Complaint Resolved: #${complaintId.substring(0, 8)}`;
+      const subject = `🔔 Complaint Update: #${complaintId.substring(0, 8)} is now ${newStatus}`;
+      const headerGradient = newStatus === 'Resolved'
+        ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' // Green
+        : 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'; // Blue
+
+      const statusIcon = newStatus === 'Resolved' ? '✅' : '🔔';
+
       const html = `
         <!DOCTYPE html>
         <html>
@@ -181,10 +186,10 @@ Deno.serve(async (req) => {
                 <td align="center" style="padding: 40px 20px;">
                   <table role="presentation" style="width: 100%; max-width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                     <tr>
-                      <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px; text-align: center;">
-                        <span style="font-size: 48px; display: block; margin-bottom: 12px;">✅</span>
+                      <td style="background: ${headerGradient}; padding: 40px; text-align: center;">
+                        <span style="font-size: 48px; display: block; margin-bottom: 12px;">${statusIcon}</span>
                         <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.025em;">
-                          Complaint Resolved!
+                          Complaint Status Update
                         </h1>
                       </td>
                     </tr>
@@ -194,23 +199,23 @@ Deno.serve(async (req) => {
                           Hi ${resident.full_name || 'Resident'}! 👋
                         </p>
                         <p style="margin: 0 0 24px 0; font-size: 15px; line-height: 1.6; color: #475569;">
-                          Great news! Your registered complaint has been marked as <strong>Resolved</strong> by the administration.
+                          The status of your registered complaint has been updated to <strong style="color: #1d4ed8;">${newStatus}</strong>.
                         </p>
                         
-                        <div style="background: #f0fdf4; padding: 24px; border-left: 4px solid #10b981; border-radius: 8px; margin-bottom: 24px;">
+                        <div style="background: #f8fafc; padding: 24px; border-left: 4px solid #3b82f6; border-radius: 8px; margin-bottom: 24px;">
                           <p style="margin: 0 0 12px 0; font-size: 14px; color: #1e293b;">
                             <strong>Complaint ID:</strong> <span style="font-family: monospace; color: #0f766e;">#${complaintId.substring(0, 8)}</span><br>
                             <strong>Category:</strong> ${category}<br>
                             <strong>Description:</strong> ${description}
                           </p>
-                          <hr style="border: 0; border-top: 1px solid #d1fae5; margin: 12px 0;">
-                          <p style="margin: 0; font-size: 14px; color: #065f46; font-style: italic;">
+                          <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 12px 0;">
+                          <p style="margin: 0; font-size: 14px; color: #334155; font-style: italic;">
                             <strong>Admin Note:</strong> ${adminNote || 'No additional note provided.'}
                           </p>
                         </div>
 
                         <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: #64748b;">
-                          If you have any questions, feel free to check the dashboard or contact us.
+                          Log in to your dashboard to track full timelines and communication logs.
                         </p>
                         <hr style="border: 0; border-top: 1px solid #f1f5f9; margin-bottom: 24px;">
                         <p style="margin: 0; font-size: 12px; color: #94a3b8; text-align: center;">
@@ -232,7 +237,7 @@ Deno.serve(async (req) => {
           to: resident.email,
           subject,
           html,
-          text: `Hi ${resident.full_name},\n\nYour complaint has been resolved:\n\nCategory: ${category}\nDescription: ${description}\nAdmin Note: ${adminNote || 'None'}`,
+          text: `Hi ${resident.full_name},\n\nYour complaint status has changed to ${newStatus}:\n\nCategory: ${category}\nDescription: ${description}\nAdmin Note: ${adminNote || 'None'}`,
         });
         results.push({ email: resident.email, success: true, messageId: info.messageId });
         await logEmail(resident.email, subject, html, "Sent");
