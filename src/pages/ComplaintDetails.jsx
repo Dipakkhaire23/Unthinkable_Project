@@ -155,8 +155,9 @@ export const ComplaintDetails = () => {
             complaintId: id,
             newStatus: status,
             adminNote: note,
-            recipientEmail: complaint.resident.email,
-            residentName: complaint.resident.full_name,
+            residentId: complaint.resident_id,
+            category: complaint.category,
+            description: complaint.description,
           });
         } catch (emailErr) {
           console.error('Email notification failed:', emailErr);

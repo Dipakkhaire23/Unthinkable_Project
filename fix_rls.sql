@@ -25,6 +25,7 @@ DROP POLICY IF EXISTS "Admins can update any profile, Users can update their own
 DROP POLICY IF EXISTS "Residents can view their own complaints, Admins view all" ON public.complaints;
 DROP POLICY IF EXISTS "Admins can update any complaint, Residents can update their own if open" ON public.complaints;
 DROP POLICY IF EXISTS "Admins can delete complaints" ON public.complaints;
+DROP POLICY IF EXISTS "Admins can delete complaints, Residents can delete their own if open" ON public.complaints;
 
 DROP POLICY IF EXISTS "Users can read history of their complaints, Admins read all" ON public.complaint_history;
 DROP POLICY IF EXISTS "Only admins can manage notices" ON public.notices;

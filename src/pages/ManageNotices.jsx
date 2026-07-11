@@ -119,14 +119,10 @@ export const ManageNotices = () => {
         // Whenever an important notice is posted, broadcast email notifications to all residents
         if (formData.important) {
           setStatusMsg('Notice created! Dispatching emails to residents...');
-          const emails = await fetchResidentEmails();
-          if (emails.length > 0) {
-            await notifyImportantNotice({
-              title: formData.title,
-              description: formData.description,
-              residentEmails: emails,
-            });
-          }
+          await notifyImportantNotice({
+            title: formData.title,
+            description: formData.description,
+          });
         }
       } else {
         await updateNotice(activeNoticeId, {
@@ -139,14 +135,10 @@ export const ManageNotices = () => {
         const originalNotice = notices.find((n) => n.id === activeNoticeId);
         if (formData.important && !originalNotice?.important) {
           setStatusMsg('Notice updated! Dispatching emails to residents...');
-          const emails = await fetchResidentEmails();
-          if (emails.length > 0) {
-            await notifyImportantNotice({
-              title: formData.title,
-              description: formData.description,
-              residentEmails: emails,
-            });
-          }
+          await notifyImportantNotice({
+            title: formData.title,
+            description: formData.description,
+          });
         }
       }
 

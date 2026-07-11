@@ -5,7 +5,6 @@ import { Settings as SettingsIcon, AlertCircle, Save, CheckCircle, Mail, Databas
 
 export const Settings = () => {
   const [overdueDays, setOverdueDays] = useState('7');
-  const [resendApiKey, setResendApiKey] = useState('');
   const [emailLogs, setEmailLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -25,9 +24,7 @@ export const Settings = () => {
       
       if (settingData) {
         const overdue = settingData.find(s => s.key === 'overdue_days');
-        const resend = settingData.find(s => s.key === 'resend_api_key');
         if (overdue) setOverdueDays(overdue.value);
-        if (resend) setResendApiKey(resend.value);
       }
 
       // 2. Fetch recent email logs (limit to 50 for performance)
@@ -70,13 +67,6 @@ export const Settings = () => {
         .upsert({ key: 'overdue_days', value: overdueDays.toString() });
 
       if (ovErr) throw ovErr;
-
-      // Save Resend API Key
-      const { error: reErr } = await supabase
-        .from('settings')
-        .upsert({ key: 'resend_api_key', value: resendApiKey.trim() });
-
-      if (reErr) throw reErr;
 
       setSuccessMsg('Settings updated successfully!');
       setTimeout(() => setSuccessMsg(''), 3000);
@@ -163,23 +153,6 @@ export const Settings = () => {
                 </div>
                 <p className="mt-2 text-[10px] text-slate-400 leading-relaxed">
                   Complaints not resolved within this threshold are flagged as <strong>Overdue</strong>, highlighted red, and pinned at the top.
-                </p>
-              </div>
-
-              {/* Resend API Key Configuration */}
-              <div className="pt-3 border-t border-slate-100">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-                  Resend API Key
-                </label>
-                <input
-                  type="password"
-                  placeholder="re_1234567890abcdef..."
-                  value={resendApiKey}
-                  onChange={(e) => setResendApiKey(e.target.value)}
-                  className="block w-full rounded-lg border border-slate-300 py-1.5 px-3 text-xs focus:outline-hidden focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 bg-white font-medium text-slate-700"
-                />
-                <p className="mt-2 text-[10px] text-slate-400 leading-relaxed">
-                  Enter your Resend API Key to deliver actual emails. Leave blank to run in simulated logging mode.
                 </p>
               </div>
 

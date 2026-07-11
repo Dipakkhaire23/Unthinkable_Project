@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Lock, Phone, Home, Building2, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, Phone, Home, Building2, Eye, EyeOff, Shield, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ export const Register = () => {
         building: formData.building,
       });
 
-      setSuccessMsg('Account created successfully! Please log in.');
+      setSuccessMsg('Account created successfully! Redirecting to login...');
       setTimeout(() => {
         navigate('/login');
       }, 2500);
@@ -93,215 +93,306 @@ export const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/20 to-slate-100 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-lg space-y-8 rounded-2xl border border-slate-200/80 bg-white p-8 shadow-xl">
-        {/* Branding header */}
-        <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary-600 text-white text-xl font-bold shadow-lg shadow-primary-500/25">
-            S
+    <div className="flex min-h-screen bg-slate-50 font-sans">
+      {/* Split Layout Container */}
+      <div className="flex w-full flex-col lg:flex-row">
+        
+        {/* Left Side: Info panel (Hidden on mobile) */}
+        <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-tr from-sky-955 via-primary-950 to-sky-900 text-white p-16 flex-col justify-between">
+          {/* Subtle decorative glow circles */}
+          <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-primary-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-sky-400/10 rounded-full blur-3xl" />
+
+          {/* Logo & Brand Header */}
+          <div className="flex items-center gap-3 relative z-10">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary-400 to-sky-600 text-white shadow-lg shadow-primary-500/20">
+              <Building2 className="h-6 w-6" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight">Society Maintenance</h1>
+              <p className="text-[10px] text-primary-300 font-semibold tracking-wider uppercase">Resident & Admin Portal</p>
+            </div>
           </div>
-          <h2 className="mt-6 text-3xl font-extrabold text-slate-800 tracking-tight">
-            Create Resident Account
-          </h2>
-          <p className="mt-2 text-sm text-slate-500">
-            Sign up to track and raise society maintenance requests
-          </p>
+
+          {/* Core Banner / Call to Action */}
+          <div className="my-auto space-y-6 relative z-10 max-w-lg">
+            <h2 className="text-4xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-white via-slate-100 to-primary-200 bg-clip-text text-transparent">
+              Join the Society Maintenance Portal today.
+            </h2>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              Create an account as a resident to easily file complaints, upload photographic evidence, track status resolutions, and read announcements from the Notice Board.
+            </p>
+
+            {/* List of Features */}
+            <div className="space-y-4 pt-6">
+              <div className="flex items-start gap-3">
+                <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-500/20 text-primary-300">
+                  <CheckCircle2 className="h-4 w-4" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-100">Quick Sign Up</h4>
+                  <p className="text-xs text-slate-400">Fill in your basic information and flat details to register instantly.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-500/20 text-primary-300">
+                  <CheckCircle2 className="h-4 w-4" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-100">Notice Board Updates</h4>
+                  <p className="text-xs text-slate-400">Receive priority announcements automatically broadcasted directly to your email.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-500/20 text-primary-300">
+                  <CheckCircle2 className="h-4 w-4" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-100">Resident Dashboard</h4>
+                  <p className="text-xs text-slate-400">Access filters, search utilities, and detailed timelines for your resolved complaints.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Info */}
+          <div className="relative z-10 flex justify-between text-xs text-primary-300 border-t border-white/10 pt-4">
+            <span>© {new Date().getFullYear()} Society Maintenance Portal</span>
+            <span className="flex items-center gap-1"><Shield className="h-3 w-3" /> Secure SSL Connection</span>
+          </div>
         </div>
 
-        {/* Success / Error Messages */}
-        {successMsg && (
-          <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-800 animate-fade-in">
-            {successMsg}
-          </div>
-        )}
-
-        {errors.api && (
-          <div className="rounded-lg bg-rose-50 border border-rose-200 p-4 text-sm text-rose-800 animate-fade-in">
-            {errors.api}
-          </div>
-        )}
-
-        {/* Form */}
-        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-          {/* Full Name */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-              Full Name
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                <User className="h-4 w-4" />
-              </span>
-              <input
-                name="fullName"
-                type="text"
-                value={formData.fullName}
-                onChange={handleChange}
-                className={`block w-full rounded-lg border py-2.5 pl-10 pr-3 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-2 transition-all duration-200 ${
-                  errors.fullName
-                    ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/10'
-                    : 'border-slate-300 focus:border-primary-500 focus:ring-primary-500/20'
-                }`}
-                placeholder="John Doe"
-              />
+        {/* Right Side: Form area */}
+        <div className="flex w-full lg:w-1/2 items-center justify-center p-6 sm:p-10 md:p-14 bg-slate-50">
+          <div className="w-full max-w-lg space-y-6">
+            
+            {/* Mobile Header (Hidden on Desktop) */}
+            <div className="text-center lg:text-left space-y-2">
+              <div className="flex items-center justify-center lg:justify-start gap-2.5">
+                <div className="flex lg:hidden h-10 w-10 items-center justify-center rounded-lg bg-primary-600 text-white shadow-md">
+                  <Building2 className="h-5 w-5" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
+                  Create Resident Account
+                </h2>
+              </div>
+              <p className="text-sm text-slate-500">
+                Register your account to manage and track maintenance requests.
+              </p>
             </div>
-            {errors.fullName && <p className="mt-1 text-xs text-rose-600">{errors.fullName}</p>}
-          </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-              Email Address
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                <Mail className="h-4 w-4" />
-              </span>
-              <input
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`block w-full rounded-lg border py-2.5 pl-10 pr-3 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-2 transition-all duration-200 ${
-                  errors.email
-                    ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/10'
-                    : 'border-slate-300 focus:border-primary-500 focus:ring-primary-500/20'
-                }`}
-                placeholder="john@example.com"
-              />
-            </div>
-            {errors.email && <p className="mt-1 text-xs text-rose-600">{errors.email}</p>}
-          </div>
+            {/* Notifications */}
+            {successMsg && (
+              <div className="rounded-xl bg-emerald-50 border border-emerald-250 p-4 text-xs font-semibold text-emerald-800 animate-fade-in flex items-center gap-2">
+                <CheckCircle2 className="h-4.5 w-4.5" />
+                {successMsg}
+              </div>
+            )}
 
-          {/* Password */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-              Password (min 8 chars)
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                <Lock className="h-4 w-4" />
-              </span>
-              <input
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                value={formData.password}
-                onChange={handleChange}
-                className={`block w-full rounded-lg border py-2.5 pl-10 pr-10 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-2 transition-all duration-200 ${
-                  errors.password
-                    ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/10'
-                    : 'border-slate-300 focus:border-primary-500 focus:ring-primary-500/20'
-                }`}
-                placeholder="••••••••"
-              />
+            {errors.api && (
+              <div className="rounded-xl bg-rose-50 border border-rose-250 p-4 text-xs font-semibold text-rose-800 animate-fade-in flex items-start gap-2">
+                <span className="text-base leading-none">⚠️</span>
+                {errors.api}
+              </div>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              
+              {/* Full Name */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-505">
+                  Full Name
+                </label>
+                <div className="relative group">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-primary-500 transition-colors">
+                    <User className="h-4 w-4" />
+                  </span>
+                  <input
+                    name="fullName"
+                    type="text"
+                    required
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    className={`block w-full rounded-xl border py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-4 transition-all duration-200 ${
+                      errors.fullName
+                        ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10 bg-rose-50/10 text-rose-900'
+                        : 'border-slate-350 focus:border-primary-500 focus:ring-primary-500/10 text-slate-700 bg-white'
+                    }`}
+                    placeholder="John Doe"
+                  />
+                </div>
+                {errors.fullName && <p className="text-xs text-rose-600 font-semibold">{errors.fullName}</p>}
+              </div>
+
+              {/* Email Address */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-505">
+                  Email Address
+                </label>
+                <div className="relative group">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-primary-500 transition-colors">
+                    <Mail className="h-4 w-4" />
+                  </span>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`block w-full rounded-xl border py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-4 transition-all duration-200 ${
+                      errors.email
+                        ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10 bg-rose-50/10 text-rose-900'
+                        : 'border-slate-350 focus:border-primary-500 focus:ring-primary-500/10 text-slate-700 bg-white'
+                    }`}
+                    placeholder="john.doe@example.com"
+                  />
+                </div>
+                {errors.email && <p className="text-xs text-rose-600 font-semibold">{errors.email}</p>}
+              </div>
+
+              {/* Password */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-505">
+                  Password
+                </label>
+                <div className="relative group">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-primary-500 transition-colors">
+                    <Lock className="h-4 w-4" />
+                  </span>
+                  <input
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`block w-full rounded-xl border py-2.5 pl-11 pr-11 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-4 transition-all duration-200 ${
+                      errors.password
+                        ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10 bg-rose-50/10 text-rose-900'
+                        : 'border-slate-350 focus:border-primary-500 focus:ring-primary-500/10 text-slate-700 bg-white'
+                    }`}
+                    placeholder="Min 8 characters"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-650"
+                  >
+                    {showPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
+                  </button>
+                </div>
+                {errors.password && <p className="text-xs text-rose-600 font-semibold">{errors.password}</p>}
+              </div>
+
+              {/* Phone Number */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-505">
+                  Phone Number
+                </label>
+                <div className="relative group">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-primary-500 transition-colors">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <input
+                    name="phone"
+                    type="text"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`block w-full rounded-xl border py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-4 transition-all duration-200 ${
+                      errors.phone
+                        ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10 bg-rose-50/10 text-rose-900'
+                        : 'border-slate-350 focus:border-primary-500 focus:ring-primary-500/10 text-slate-700 bg-white'
+                    }`}
+                    placeholder="e.g. +91 9876543210"
+                  />
+                </div>
+                {errors.phone && <p className="text-xs text-rose-600 font-semibold">{errors.phone}</p>}
+              </div>
+
+              {/* Grid: Flat & Building details */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Flat Number */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-505">
+                    Flat Number
+                  </label>
+                  <div className="relative group">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-primary-500 transition-colors">
+                      <Home className="h-4 w-4" />
+                    </span>
+                    <input
+                      name="flatNumber"
+                      type="text"
+                      required
+                      value={formData.flatNumber}
+                      onChange={handleChange}
+                      className={`block w-full rounded-xl border py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-4 transition-all duration-200 ${
+                        errors.flatNumber
+                          ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10 bg-rose-50/10 text-rose-900'
+                          : 'border-slate-350 focus:border-primary-500 focus:ring-primary-500/10 text-slate-700 bg-white'
+                      }`}
+                      placeholder="e.g. A-402"
+                    />
+                  </div>
+                  {errors.flatNumber && <p className="text-xs text-rose-600 font-semibold">{errors.flatNumber}</p>}
+                </div>
+
+                {/* Building */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-550">
+                    Building/Block
+                  </label>
+                  <div className="relative group">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-primary-500 transition-colors">
+                      <Building2 className="h-4 w-4" />
+                    </span>
+                    <input
+                      name="building"
+                      type="text"
+                      required
+                      value={formData.building}
+                      onChange={handleChange}
+                      className={`block w-full rounded-xl border py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-4 transition-all duration-200 ${
+                        errors.building
+                          ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10 bg-rose-50/10 text-rose-900'
+                          : 'border-slate-350 focus:border-primary-500 focus:ring-primary-500/10 text-slate-700 bg-white'
+                      }`}
+                      placeholder="e.g. Block C"
+                    />
+                  </div>
+                  {errors.building && <p className="text-xs text-rose-600 font-semibold">{errors.building}</p>}
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600"
+                type="submit"
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-sky-700 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 hover:from-primary-700 hover:to-sky-800 focus:outline-hidden focus:ring-4 focus:ring-primary-500/20 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none transition-all duration-200 pt-3"
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {loading ? 'Creating Account...' : (
+                  <>
+                    Register Account <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
               </button>
+            </form>
+
+            {/* Redirect Link */}
+            <div className="text-center text-sm text-slate-500 pt-4 border-t border-slate-200">
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="font-bold text-primary-600 hover:text-primary-700 hover:underline transition-colors"
+              >
+                Sign In
+              </Link>
             </div>
-            {errors.password && <p className="mt-1 text-xs text-rose-600">{errors.password}</p>}
+
           </div>
-
-          {/* Phone */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-              Phone Number
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                <Phone className="h-4 w-4" />
-              </span>
-              <input
-                name="phone"
-                type="text"
-                value={formData.phone}
-                onChange={handleChange}
-                className={`block w-full rounded-lg border py-2.5 pl-10 pr-3 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-2 transition-all duration-200 ${
-                  errors.phone
-                    ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/10'
-                    : 'border-slate-300 focus:border-primary-500 focus:ring-primary-500/20'
-                }`}
-                placeholder="9876543210"
-              />
-            </div>
-            {errors.phone && <p className="mt-1 text-xs text-rose-600">{errors.phone}</p>}
-          </div>
-
-          {/* Grid: Flat & Building */}
-          <div className="grid grid-cols-2 gap-4">
-            {/* Flat Number */}
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-                Flat Number
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                  <Home className="h-4 w-4" />
-                </span>
-                <input
-                  name="flatNumber"
-                  type="text"
-                  value={formData.flatNumber}
-                  onChange={handleChange}
-                  className={`block w-full rounded-lg border py-2.5 pl-10 pr-3 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-2 transition-all duration-200 ${
-                    errors.flatNumber
-                      ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/10'
-                      : 'border-slate-300 focus:border-primary-500 focus:ring-primary-500/20'
-                  }`}
-                  placeholder="A-402"
-                />
-              </div>
-              {errors.flatNumber && <p className="mt-1 text-xs text-rose-600">{errors.flatNumber}</p>}
-            </div>
-
-            {/* Building */}
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
-                Building Name
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                  <Building2 className="h-4 w-4" />
-                </span>
-                <input
-                  name="building"
-                  type="text"
-                  value={formData.building}
-                  onChange={handleChange}
-                  className={`block w-full rounded-lg border py-2.5 pl-10 pr-3 text-sm placeholder-slate-400 focus:outline-hidden focus:ring-2 transition-all duration-200 ${
-                    errors.building
-                      ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/10'
-                      : 'border-slate-300 focus:border-primary-500 focus:ring-primary-500/20'
-                  }`}
-                  placeholder="Block C"
-                />
-              </div>
-              {errors.building && <p className="mt-1 text-xs text-rose-600">{errors.building}</p>}
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex w-full items-center justify-center rounded-lg bg-primary-600 py-3 text-sm font-semibold text-white shadow-md shadow-primary-500/20 hover:bg-primary-700 focus:outline-hidden focus:ring-2 focus:ring-primary-500/50 active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none transition-all duration-200"
-          >
-            {loading ? 'Registering Account...' : 'Register as Resident'}
-          </button>
-        </form>
-
-        {/* Redirect Link */}
-        <div className="text-center text-sm text-slate-500 pt-2 border-t border-slate-100">
-          Already have an account?{' '}
-          <Link
-            to="/login"
-            className="font-semibold text-primary-600 hover:text-primary-700 transition-colors"
-          >
-            Sign In
-          </Link>
         </div>
       </div>
     </div>
