@@ -2,7 +2,7 @@
 
 A modern full-stack web application for housing societies to streamline complaint management, resident ticketing, announcements, and admin workflows.
 
-## 🔗 Project Links
+## 🔗 Projects Links
 - **Hosted Application URL**: [https://unthinkable-maintenance-tracker.vercel.app](https://unthinkable-project-beige.vercel.app/)
 - **System Design Write-Up**: [SYSTEM_DESIGN.md](file:///d:/Desktop/Unthinkable_Project/SYSTEM_DESIGN.md)
 

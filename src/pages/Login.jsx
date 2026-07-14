@@ -76,15 +76,15 @@ export const Login = () => {
           <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-sky-400/10 rounded-full blur-3xl" />
 
           {/* Logo & Brand Header */}
-          <div className="flex items-center gap-3 relative z-10">
+          <Link to="/" className="flex items-center gap-3 relative z-10 hover:opacity-85 transition-opacity">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary-400 to-sky-600 text-white shadow-lg shadow-primary-500/20">
               <Building2 className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight">Society Maintenance</h1>
+              <h1 className="text-lg font-bold tracking-tight text-white">Society Maintenance</h1>
               <p className="text-[10px] text-primary-300 font-semibold tracking-wider uppercase">Resident & Admin Portal</p>
             </div>
-          </div>
+          </Link>
 
           {/* Core Banner / Call to Action */}
           <div className="my-auto space-y-6 relative z-10 max-w-lg">
@@ -143,9 +143,9 @@ export const Login = () => {
             {/* Mobile Header (Hidden on Desktop) */}
             <div className="text-center lg:text-left space-y-2">
               <div className="flex items-center justify-center lg:justify-start gap-2.5">
-                <div className="flex lg:hidden h-10 w-10 items-center justify-center rounded-lg bg-primary-600 text-white shadow-md">
+                <Link to="/" className="flex lg:hidden h-10 w-10 items-center justify-center rounded-lg bg-primary-600 text-white shadow-md hover:scale-105 transition-transform">
                   <Building2 className="h-5 w-5" />
-                </div>
+                </Link>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
                   Sign In
                 </h2>

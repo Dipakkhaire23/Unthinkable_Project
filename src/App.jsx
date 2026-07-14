@@ -18,6 +18,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import ManageComplaints from './pages/ManageComplaints';
 import ManageNotices from './pages/ManageNotices';
 import Settings from './pages/Settings';
+import Landing from './pages/Landing';
+
 
 function App() {
   if (!isConfigured) {
@@ -65,7 +67,7 @@ function App() {
           </Route>
 
           {/* Fallback Root Directives */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Landing />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
