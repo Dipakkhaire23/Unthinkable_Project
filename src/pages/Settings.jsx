@@ -7,7 +7,7 @@ export const Settings = () => {
   const [overdueDays, setOverdueDays] = useState('7');
   const [emailLogs, setEmailLogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // States
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -16,12 +16,12 @@ export const Settings = () => {
   const fetchSettingsAndLogs = async () => {
     try {
       setLoading(true);
-      
+
       // 1. Fetch settings keys
       const { data: settingData, error: setErr } = await supabase
         .from('settings')
         .select('*');
-      
+
       if (settingData) {
         const overdue = settingData.find(s => s.key === 'overdue_days');
         if (overdue) setOverdueDays(overdue.value);
@@ -33,7 +33,7 @@ export const Settings = () => {
         .select('*')
         .order('sent_at', { ascending: false })
         .limit(50);
-      
+
       if (logsData) {
         setEmailLogs(logsData);
       }
@@ -82,7 +82,7 @@ export const Settings = () => {
     if (!window.confirm('Are you sure you want to clear all email logs from the database?')) {
       return;
     }
-    
+
     setLoading(true);
     try {
       const { error } = await supabase.from('email_logs').delete().neq('id', '00000000-0000-0000-0000-000000000000');
@@ -175,7 +175,7 @@ export const Settings = () => {
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
               <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
                 <Mail className="h-4.5 w-4.5 text-primary-650" />
-                Notification Logs (`email_logs`)
+                Notification Emails Logs
               </h3>
               {emailLogs.length > 0 && (
                 <button
@@ -209,13 +209,12 @@ export const Settings = () => {
                         <td className="py-2.5 pr-4 font-medium truncate max-w-[120px]">{log.recipient}</td>
                         <td className="py-2.5 pr-4 truncate max-w-[180px]">{log.subject}</td>
                         <td className="py-2.5 pr-4">
-                          <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                            log.status === 'Sent'
-                              ? 'bg-emerald-50 text-emerald-700'
-                              : log.status === 'Failed'
+                          <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${log.status === 'Sent'
+                            ? 'bg-emerald-50 text-emerald-700'
+                            : log.status === 'Failed'
                               ? 'bg-rose-50 text-rose-700'
                               : 'bg-slate-100 text-slate-600'
-                          }`}>
+                            }`}>
                             {log.status}
                           </span>
                         </td>

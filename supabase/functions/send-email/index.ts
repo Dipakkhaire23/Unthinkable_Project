@@ -80,7 +80,7 @@ Deno.serve(async (req) => {
 
       // Send email to each resident
       for (const resident of residents) {
-        const subject = `📢 New Notice: ${title}`;
+        const subject = `New Notice: ${title}`;
         const html = `
           <!DOCTYPE html>
           <html>
@@ -166,7 +166,7 @@ Deno.serve(async (req) => {
         throw new Error(`Resident details not found in database: ${fetchError?.message || 'No record'}`);
       }
 
-      const subject = `🔔 Complaint Update: #${complaintId.substring(0, 8)} is now ${newStatus}`;
+      const subject = `Complaint Update: #${complaintId.substring(0, 8)} is now ${newStatus}`;
       const headerGradient = newStatus === 'Resolved'
         ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' // Green
         : 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'; // Blue
