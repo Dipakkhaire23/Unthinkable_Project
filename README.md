@@ -60,8 +60,8 @@ The platform supports two distinct interfaces using role-based routing (configur
 ---
 
 ## 👥 Test Accounts
-* **Resident**: `chopadeprajwal06@gmail.com` / `123456789`
-* **Admin**: `dipakhaire23@gmail.com` / `12345678`
+* **Resident**: `chopadeprajwal06@gmail.com` / `12345678`
+* **Admin**: `dipakhaire23@gmail.com` / `123456789`
 
 ---
 
